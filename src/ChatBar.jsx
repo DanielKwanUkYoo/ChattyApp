@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
 
 class ChatBar extends Component {
+    
     render() {
+        const {name} = this.props.user;
         return (
-            <nav className="navbar">
-                <a href="/" className="navbar-brand">Chatty</a>
-            </nav>
+        <footer className="chatbar">
+            <input className="chatbar-username" placeholder={name} />
+            <input className="chatbar-message" placeholder="Type a message and hit ENTER" />
+        </footer>
         )
     }
 }
