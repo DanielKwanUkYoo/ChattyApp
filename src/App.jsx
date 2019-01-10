@@ -14,13 +14,10 @@ class App extends Component {
     }
     this.socket = socket;
     this.addText = this.addText.bind(this);
-   
-    // this.userInputName = this.userInputName(this);
-  }
-  
-  // userInputName(name) {
+    this.addNewUser = this.addNewUser.bind(this);
 
-  // }
+  }
+
 
   componentDidMount() {
     console.log("componentDidMount <App />");
@@ -49,8 +46,16 @@ class App extends Component {
   }
 
 
-
+  addNewUser(newUser) {
+    const addedUser = {
+      name: newUser
+    }
+    this.setState({
+      currentUser: addedUser
+    })
+  }
   addText(newText) {
+    
     const newMessage = {
       username: this.state.currentUser.name,
       content: newText
@@ -67,7 +72,7 @@ class App extends Component {
         </nav>
         <MessageList messages={this.state.messages} />
         <Message user={this.state.currentUser} messages={this.state.messages} />
-        <ChatBar user={this.state.currentUser} addText={this.addText} userInputName={this.userInputName}/>
+        <ChatBar user={this.state.currentUser} addText={this.addText} addNewUser={this.addNewUser}/>
       </div>
       
     );

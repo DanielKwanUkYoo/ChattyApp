@@ -9,12 +9,17 @@ class ChatBar extends Component {
             if (e.key === 'Enter') {
                 this.props.addText(e.target.value)
                 e.target.value = '';
+                
             }
+        }
+        const newUser = (e) => {
+            e.preventDefault();
+            this.props.addNewUser(e.target.value)
         }
 
         return (
         <footer className="chatbar">
-            <input className="chatbar-username" placeholder={name} />
+            <input onKeyUp={newUser} className="chatbar-username" placeholder={name} />
             <input onKeyUp={newText} name="textbox" className="chatbar-message" placeholder="Type a message and hit ENTER" />
         </footer>
         )
