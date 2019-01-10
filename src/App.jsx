@@ -33,7 +33,6 @@ class App extends Component {
     }
 
 
-
     setTimeout(() => {
     console.log("Simulating incoming message");
     // Add a new message to the list of messages in the data store
