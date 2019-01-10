@@ -8,13 +8,15 @@ class ChatBar extends Component {
             e.preventDefault();
             if (e.key === 'Enter') {
                 this.props.addText(e.target.value)
-                e.target.value = '';
-                
+                e.target.value = '';   
             }
         }
         const newUser = (e) => {
             e.preventDefault();
-            this.props.addNewUser(e.target.value)
+            if (e.key === "Enter") {
+                e.target.placeholder = e.target.value;
+                this.props.addNewUser(e.target.value)
+            }
         }
 
         return (
@@ -28,12 +30,3 @@ class ChatBar extends Component {
 
 export default ChatBar;
 
-        // const userInputName = (e) => {
-        //     e.preventDefault();
-        //     if (e.target.value === "") {
-        //         this.props.userInputName("Anonymous")
-        //     } else {
-        //         this.props.userInputName(e.target.value)
-        //     }
-        // }
-        // onChange={userInputName}

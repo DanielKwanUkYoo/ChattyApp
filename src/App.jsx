@@ -1,3 +1,4 @@
+//TODO notifications deletes when changed again
 import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import Message from './Message.jsx';
@@ -9,7 +10,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {name: "bob"},
+      currentUser: {
+        name: 'bob',
+        changed: false
+      },
       messages: []
     }
     this.socket = socket;
@@ -23,12 +27,24 @@ class App extends Component {
     console.log("componentDidMount <App />");
 
     this.socket.onmessage = (e) => {
-      console.log(e)
-      console.log(JSON.parse(e.data));
+      const data = JSON.parse(e.data)
+      switch(data.type) {
+        case "Incoming Message":
+          data.type = "Incoming Message(front)"
+        break;
+        case "Incoming User":
+          data.type = "Incoming Notification"
+          // data.content = "User"
+        break;
+      }
+      
+      
       
       this.setState({
+        currentUser: data,
         messages: this.state.messages.concat(JSON.parse(e.data))
       })
+      console.log(`i'm currentState`, this.state.currentUser)
       
     }
 
@@ -47,17 +63,23 @@ class App extends Component {
 
   addNewUser(newUser) {
     const addedUser = {
-      name: newUser
+      previousName: this.state.currentUser.name,
+      name: newUser,
+      type: "Post User",
+      changed: true
     }
-    this.setState({
-      currentUser: addedUser
-    })
+    this.socket.send(JSON.stringify(addedUser))
+    // this.setState({
+    //   currentUser: addedUser
+    // })
   }
+
   addText(newText) {
     
     const newMessage = {
       username: this.state.currentUser.name,
-      content: newText
+      content: newText,
+      type: "Post Message"
     }
     this.socket.send(JSON.stringify(newMessage));
   }
@@ -70,7 +92,7 @@ class App extends Component {
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
         <MessageList messages={this.state.messages} />
-        <Message user={this.state.currentUser} messages={this.state.messages} />
+        <Message user={this.state.currentUser} />
         <ChatBar user={this.state.currentUser} addText={this.addText} addNewUser={this.addNewUser}/>
       </div>
       

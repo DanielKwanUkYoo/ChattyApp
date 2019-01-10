@@ -24,15 +24,26 @@ wss.broadcast = function broadcast(data) {
         client.send(data);
       }
     });
-  };
+};
 
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
     ws.on('message', function incoming(data){
-        const parsedData = JSON.parse(data);
+      console.log(`data received`, data)
+      const parsedData = JSON.parse(data);
+      switch(parsedData.type) {
+        case "Post User":
+        parsedData.type = "Incoming User"
+        break;
+
+        case "Post Message":
         parsedData.id = uuidv1();
-        // ws.send(JSON.stringify(parsedData))
+        parsedData.type = "Incoming Message"
+        break;
+      } 
+      // parsedData.id = uuidv1();
+      // parsedData.type = "Incoming Message"
         
         wss.clients.forEach(function each(client) {
 
@@ -40,7 +51,7 @@ wss.on('connection', (ws) => {
               client.send(JSON.stringify(parsedData));
             }
         })    
-        // console.log(`User ${JSON.parse(data).username} said ${JSON.parse(data).content}`);
+
 
         
        
