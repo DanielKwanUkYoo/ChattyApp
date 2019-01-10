@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
+// const SocketServer = require('ws').Server;
+// const wss = new SocketServer({WebPackDevServer});
 
 new WebpackDevServer(webpack(config), {
     publicPath: config.output.publicPath,
