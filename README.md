@@ -9,3 +9,5 @@ A real-time communication chatting app built on React, WebSocket where multiple 
 * run `npm start` inside ChattyApp folder and run `npm start` on chatty_server at the same time
 * Go to `localhost:3000` in multiple browser to chat!
 
+## ScreenShots
+
