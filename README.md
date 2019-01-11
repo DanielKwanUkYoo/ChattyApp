@@ -10,4 +10,4 @@ A real-time communication chatting app built on React, WebSocket where multiple 
 * Go to `localhost:3000` in multiple browser to chat!
 
 ## ScreenShots
-[]!(https://github.com/DanielKwanUkYoo/ChattyApp/blob/master/docs/chattyApp.gif)
+![](https://github.com/DanielKwanUkYoo/ChattyApp/blob/master/docs/chattyApp.gif)
