@@ -1,4 +1,6 @@
 //TODO notifications deletes when changed again
+//Empty inputname will be anonymous
+//is it same browser?
 import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import Message from './Message.jsx';
@@ -14,6 +16,7 @@ class App extends Component {
         name: 'bob',
         changed: false
       },
+      numUser: 0,
       messages: []
     }
     this.socket = socket;
@@ -25,42 +28,39 @@ class App extends Component {
 
   componentDidMount() {
     console.log("componentDidMount <App />");
-
     this.socket.onmessage = (e) => {
       const data = JSON.parse(e.data)
+
       switch(data.type) {
         case "Incoming Message":
           data.type = "Incoming Message(front)"
+          this.setState({
+            messages: this.state.messages.concat(data)
+          })
         break;
         case "Incoming User":
           data.type = "Incoming Notification"
-          // data.content = "User"
+          this.setState({
+            currentUser: data
+          })
         break;
+        case "Incoming newUser":
+        console.log(`data has arrived`, data)
+        this.setState({
+          numUser: data.numOfUser
+        })
       }
-      
-      
-      
-      this.setState({
-        currentUser: data,
-        messages: this.state.messages.concat(JSON.parse(e.data))
-      })
-      console.log(`i'm currentState`, this.state.currentUser)
-      
     }
 
 
     setTimeout(() => {
-    console.log("Simulating incoming message");
-    // Add a new message to the list of messages in the data store
     const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
     const messages = this.state.messages.concat(newMessage)
-    // Update the state of the app component.
-    // Calling setState will trigger a call to render() in App and all child components.
     this.setState({messages: messages})
-  }, 3000);
+    }, 3000);
   }
 
-
+//-------------------------------------------
   addNewUser(newUser) {
     const addedUser = {
       previousName: this.state.currentUser.name,
@@ -69,11 +69,8 @@ class App extends Component {
       changed: true
     }
     this.socket.send(JSON.stringify(addedUser))
-    // this.setState({
-    //   currentUser: addedUser
-    // })
   }
-
+//-------------------------------------------
   addText(newText) {
     
     const newMessage = {
@@ -84,12 +81,13 @@ class App extends Component {
     this.socket.send(JSON.stringify(newMessage));
   }
 
-  
+//-------------------------------------------
   render() {
     return (
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+          <p className="userCount">User Count: {this.state.numUser}</p>
         </nav>
         <MessageList messages={this.state.messages} />
         <Message user={this.state.currentUser} />
