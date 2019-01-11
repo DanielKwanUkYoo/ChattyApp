@@ -20,13 +20,13 @@ wss.on('connection', (ws) => {
   const numberOfClients = {
     numOfUser: wss.clients.size,
     type: "Incoming newUser"
-  }
+  };
 
   wss.clients.forEach(function each(client) {
     if (client.readyState === ws.OPEN) {
       client.send(JSON.stringify(numberOfClients));
     }
-  })    
+  });    
   // ws.send(JSON.stringify(numberOfClients));
 //--------------------------------------------    
   ws.on('message', function incoming(data){
@@ -49,7 +49,7 @@ wss.on('connection', (ws) => {
           if (client.readyState === ws.OPEN) {
             client.send(JSON.stringify(parsedData));
           }
-      })    
+      });    
     })
 //-------------------------------------------
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
@@ -57,11 +57,11 @@ wss.on('connection', (ws) => {
     const numberOfClientsLeft = {
       numOfUser: wss.clients.size,
       type: "Incoming newUser"
-    }
+    };
     wss.clients.forEach(function each(client) {
       if (client.readyState === ws.OPEN) {
         client.send(JSON.stringify(numberOfClientsLeft));
       }
-    })
+    });
   })
 })

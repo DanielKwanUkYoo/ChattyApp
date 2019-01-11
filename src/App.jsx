@@ -1,6 +1,3 @@
-//TODO notifications deletes when changed again
-//Empty inputname will be anonymous
-//is it same browser?
 import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import Message from './Message.jsx';
@@ -18,12 +15,11 @@ class App extends Component {
       },
       numUser: 0,
       messages: []
-    }
+    };
     this.socket = socket;
     this.addText = this.addText.bind(this);
     this.addNewUser = this.addNewUser.bind(this);
-
-  }
+  };
 
 
   componentDidMount() {
@@ -36,23 +32,22 @@ class App extends Component {
           data.type = "Incoming Message(front)"
           this.setState({
             messages: this.state.messages.concat(data)
-          })
-        break;
+          });
+          break;
         case "Incoming User":
           data.type = "Incoming Notification"
           this.setState({
             currentUser: data
-          })
-        break;
+          });
+          break;
         case "Incoming newUser":
-        console.log(`data has arrived`, data)
-        this.setState({
-          numUser: data.numOfUser
-        })
+          console.log(`data has arrived`, data)
+          this.setState({
+            numUser: data.numOfUser
+          });
+          break;
       }
     }
-
-
     setTimeout(() => {
     const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
     const messages = this.state.messages.concat(newMessage)
